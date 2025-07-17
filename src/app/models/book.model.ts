@@ -1,14 +1,15 @@
 export interface Book {
-  id: string;
+  id: number;
   title: string;
   author: string;
-  DateOfPublication: Date;
+  dateOfPublication: Date;
   userId: string;
 }
 
-export interface CreateBookRequest {
+export interface IBookHttpObj {
+  id?: number;
   title: string;
   author: string;
-  DateOfPublication: Date;
+  dateOfPublication: string;
   userId: string;
 }

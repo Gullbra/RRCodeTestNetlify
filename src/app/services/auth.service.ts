@@ -143,7 +143,8 @@ export class AuthService {
       tap(response => {
         this.setSession(response);
       }),
-      catchError((arg) => { 
+      catchError((arg) => {
+        console.error('Error refreshing token:', arg);
         this.logout();
         return this.handleError(arg) 
       })

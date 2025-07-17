@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../../services/book.service';
-import { Book } from '../../models/book.model';
+import { Book, IBookHttpObj } from '../../models/book.model';
 
 @Component({
   selector: 'app-book-form',
@@ -81,8 +81,8 @@ import { Book } from '../../models/book.model';
                       type="number" 
                       class="form-control"
                       formControlName="publicationYear"
-                      min="1000"
-                      max="2025"
+                      min="0"
+                      max="String(new Date().getFullYear())"
                       [class.is-invalid]="bookForm.get('publicationYear')?.invalid && bookForm.get('publicationYear')?.touched">
                     <div class="invalid-feedback" *ngIf="bookForm.get('publicationYear')?.invalid && bookForm.get('publicationYear')?.touched">
                       Please enter a valid publication year
@@ -143,7 +143,7 @@ export class BookFormComponent implements OnInit {
     this.bookForm = this.fb.group({
       title: ['', Validators.required],
       author: ['', Validators.required],
-      genre: ['', Validators.required],
+      genre: ['', /*Validators.required*/],
       publicationYear: ['', [Validators.required, Validators.min(1000), Validators.max(2025)]],
       description: ['']
     });
@@ -161,8 +161,8 @@ export class BookFormComponent implements OnInit {
   loadBook(): void {
     this.loading = true;
     this.bookService.getBook(this.bookId!).subscribe({
-      next: (book: Book) => {
-        this.bookForm.patchValue(book);
+      next: (res) => {
+        this.bookForm.patchValue(res.data);
         this.loading = false;
       },
       error: (error) => {
@@ -177,7 +177,9 @@ export class BookFormComponent implements OnInit {
       this.loading = true;
       this.errorMessage = '';
       
-      const bookData = this.bookForm.value;
+      console.log('Form submitted with values:', this.bookForm.value);
+      const bookData: IBookHttpObj = {...this.bookForm.value, DateOfPublication: new Date(this.bookForm.value.publicationYear, 0, 1)};
+      console.log('Book data to be sent:', bookData);
       
       const request = this.isEditing 
         ? this.bookService.updateBook(this.bookId!, bookData)
@@ -192,6 +194,14 @@ export class BookFormComponent implements OnInit {
           this.loading = false;
         }
       });
+    }
+  }
+
+
+    private bookModelToHttpObj(book: Book): IBookHttpObj {
+    return {
+      ...book,
+      dateOfPublication: book.dateOfPublication.toUTCString(),
     }
   }
 }

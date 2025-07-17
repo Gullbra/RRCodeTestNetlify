@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BookService } from '../../services/book.service';
-import { Book } from '../../models/book.model';
+import { Book, IBookHttpObj } from '../../models/book.model';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +23,7 @@ import { Book } from '../../models/book.model';
                 <p class="card-text">
                   <strong>Author:</strong> {{ book.author }}<br>
                   <!-- <strong>Genre:</strong> {{ book.genre }}<br> -->
-                  <strong>Year:</strong> {{ book.DateOfPublication }}
+                  <strong>Year:</strong> {{ book.dateOfPublication.getFullYear() }}<br>
                 </p>
                 <!-- <p class="card-text">{{ book.description }}</p> -->
               </div>
@@ -92,11 +92,13 @@ export class HomeComponent implements OnInit {
     this.loadBooks();
   }
 
+
   loadBooks(): void {
     this.loading = true;
     this.bookService.getBooks().subscribe({
-      next: (books) => {
-        this.books = books;
+      next: (res) => {
+        this.books = res.data.map(this.httpBookToModel);
+        console.log('Books loaded:', res);
         this.loading = false;
       },
       error: (error) => {
@@ -106,18 +108,24 @@ export class HomeComponent implements OnInit {
     });
   }
 
+
   deleteBook(book: Book): void {
     this.bookToDelete = book;
     const modal = new (window as any).bootstrap.Modal(document.getElementById('deleteModal'));
     modal.show();
   }
 
+
   confirmDelete(): void {
     if (this.bookToDelete) {
       this.bookService.deleteBook(this.bookToDelete.id).subscribe({
-        next: () => {
-          this.books = this.books.filter(b => b.id !== this.bookToDelete!.id);
-          this.bookToDelete = null;
+        next: (res) => {
+          if(res.success) {
+            this.books = this.books.filter(b => b.id !== this.bookToDelete!.id);
+            this.bookToDelete = null;
+          } else {
+            console.error('Delete failed:', res.errors);
+          }
           const modal = (window as any).bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
           modal.hide();
         },
@@ -125,6 +133,15 @@ export class HomeComponent implements OnInit {
           console.error('Error deleting book:', error);
         }
       });
+    }
+  }
+
+
+  private httpBookToModel(book: IBookHttpObj): Book {
+    return {
+      ...book,
+      id: book.id || -1,
+      dateOfPublication: new Date(book.dateOfPublication),
     }
   }
 }
