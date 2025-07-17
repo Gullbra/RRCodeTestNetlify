@@ -101,14 +101,14 @@
 }
 
 /* Card hover effects */
-.card {
+/* .card {
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-}
+} */
 
-.card:hover {
+/* .card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
+} */
 
 [data-bs-theme="dark"] .card:hover {
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);

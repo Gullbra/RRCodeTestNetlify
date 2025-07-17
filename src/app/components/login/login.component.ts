@@ -54,7 +54,7 @@ import { AuthService } from '../../services/auth.service';
             
             <div class="text-center mt-3">
               <p>Don't have an account? 
-                <a href="#" (click)="router.navigate(['/register'])">Register here</a>
+                <a href="/register" (click)="router.navigate(['/register'])">Register here</a>
               </p>
             </div>
           </div>

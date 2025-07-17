@@ -66,7 +66,7 @@ import { AuthService } from '../../services/auth.service';
             
             <div class="text-center mt-3">
               <p>Already have an account? 
-                <a href="#" (click)="router.navigate(['/login'])">Login here</a>
+                <a href="/login" (click)="router.navigate(['/login'])">Login here</a>
               </p>
             </div>
           </div>
