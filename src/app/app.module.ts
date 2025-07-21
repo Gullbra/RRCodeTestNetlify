@@ -11,6 +11,7 @@ import { HomeComponent } from './components/home/home.component';
 import { BookFormComponent } from './components/book-form/book-form.component';
 import { QuotesComponent } from './components/quotes/quotes.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { BookService } from './services/book.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    BookService
   ],
   bootstrap: [AppComponent]
 })

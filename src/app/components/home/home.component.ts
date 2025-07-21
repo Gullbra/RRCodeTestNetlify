@@ -1,22 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BookService } from '../../services/book.service';
-import { Book, IBookHttpObj } from '../../models/book.model';
+import { IBook, IBookHttpObj } from '../../models/book.model';
+
 
 @Component({
   selector: 'app-home',
   template: `
-    <div class="row">
+    <div class="row border">
       <div class="col-12">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h1><i class="fas fa-book me-2"></i>My Books</h1>
+          
+          <h2>Qoutes</h2>
+          
           <button class="btn btn-primary" (click)="router.navigate(['/books/add'])">
             <i class="fas fa-plus me-2"></i>Add Book
           </button>
         </div>
         
-        <div class="row" *ngIf="books.length > 0; else noBooks">
-          <div class="col-md-6 col-lg-4 mb-4" *ngFor="let book of books">
+        <div class="row" *ngIf="!bookService.loading() && (bookService.books().length > 0); else noBooks">
+          <div class="col-md-6 col-lg-4 mb-4" *ngFor="let book of bookService.books()">
             <div class="card h-100">
               <div class="card-body">
                 <h5 class="card-title">{{ book.title }}</h5>
@@ -79,52 +83,42 @@ import { Book, IBookHttpObj } from '../../models/book.model';
   `
 })
 export class HomeComponent implements OnInit {
-  books: Book[] = [];
-  bookToDelete: Book | null = null;
-  loading = false;
+  bookService = inject(BookService);
+  // books: IBook[] = [];
+  bookToDelete: IBook | null = null;
 
   constructor(
-    private bookService: BookService,
+    // protected bookService: BookService,
     public router: Router
-  ) {}
+  ) {
+    // this.booksSubscription = this.bookService.booksUpdated$.subscribe({
+    //   next: (books) => {
+    //     this.books = books.map(this.httpBookToModel);
+    //   },
+    //   error: (error) => {
+    //     console.error('Error receiving book updates:', error);
+    //   }
+    // })
+  }
 
   ngOnInit(): void {
-    this.loadBooks();
+    this.bookService.loadBooks()
   }
 
-
-  loadBooks(): void {
-    this.loading = true;
-    this.bookService.getBooks().subscribe({
-      next: (res) => {
-        this.books = res.data.map(this.httpBookToModel);
-        console.log('Books loaded:', res);
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error loading books:', error);
-        this.loading = false;
-      }
-    });
-  }
-
-
-  deleteBook(book: Book): void {
+  deleteBook(book: IBook): void {
     this.bookToDelete = book;
     const modal = new (window as any).bootstrap.Modal(document.getElementById('deleteModal'));
     modal.show();
   }
-
 
   confirmDelete(): void {
     if (this.bookToDelete) {
       this.bookService.deleteBook(this.bookToDelete.id).subscribe({
         next: (res) => {
           if(res.success) {
-            this.books = this.books.filter(b => b.id !== this.bookToDelete!.id);
             this.bookToDelete = null;
           } else {
-            console.error('Delete failed:', res.errors);
+            console.error('Delete failed:', res.message);
           }
           const modal = (window as any).bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
           modal.hide();
@@ -133,15 +127,6 @@ export class HomeComponent implements OnInit {
           console.error('Error deleting book:', error);
         }
       });
-    }
-  }
-
-
-  private httpBookToModel(book: IBookHttpObj): Book {
-    return {
-      ...book,
-      id: book.id || -1,
-      dateOfPublication: new Date(book.dateOfPublication),
     }
   }
 }

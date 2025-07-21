@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { ITokenPayload } from '../models/user.model';
 import { IApiResponse } from '../models/apiResponse.model';
 import { IJwt } from '../models/token.model';
+import { BookService } from './book.service';
 
 
 
@@ -14,14 +15,15 @@ import { IJwt } from '../models/token.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly API_URL = environment.apiUrl; // Adjust to your backend URL
+  private readonly API_URL = environment.apiUrl; 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
   private isAuthenticatedSignal = signal(false);
-
+  isAuthenticated = this.isAuthenticatedSignal.asReadonly();
+  
   
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private bookService: BookService) {
     this.initializeAuth();
   }
 
@@ -40,26 +42,7 @@ export class AuthService {
           
           console.log('Token expired, refreshing session');
           this.refreshToken()
-
-          // this.refreshToken().subscribe({
-          //   next: (response) => {
-          //     if (response.success) {
-          //       const user = this.extractUserFromTokenPayload(this.decodeJWT(response.data.accessToken));
-          //       this.currentUserSubject.next(user);
-          //       this.isAuthenticatedSignal.set(true);
-          //     } else {
-          //       console.error('Refresh token failed:', response.errors);
-          //       this.logout();
-          //     }
-          //   },
-          //   error: (error) => {
-          //     console.error('Error refreshing token:', error);
-          //     this.logout();
-          //   }
-          // });
-          
-          // console.log('refresh failed, clearing session');
-
+            //.subscribe({})
 
           return;
         }
@@ -135,12 +118,16 @@ export class AuthService {
 
 
   refreshToken(): Observable<IApiResponse<ITokenPayload>> {
+
+    console.log('Refreshing token with refreshToken:', localStorage.getItem('refreshToken'), 'and accessToken:', localStorage.getItem('accessToken'));
+
     return this.http.post<IApiResponse<ITokenPayload>>(`${this.API_URL}/auth/refresh`, {
       refreshToken: localStorage.getItem('refreshToken'),
       accessToken: localStorage.getItem('accessToken')
     })
     .pipe(
       tap(response => {
+        console.log('Refreshing token, response:', response);
         this.setSession(response);
       }),
       catchError((arg) => {
@@ -160,7 +147,7 @@ export class AuthService {
   }
 
   
-  isAuthenticated = this.isAuthenticatedSignal.asReadonly();
+
 
 
   getCurrentUser(): User | null {
