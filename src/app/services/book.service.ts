@@ -141,6 +141,8 @@ export class BookService {
       ...book,
       id: book.id || -1,
       dateOfPublication: new Date(book.dateOfPublication),
+      // dateOfPublication: book.dateOfPublication.toISOString().split('T')[0], // converting to string without time
+
     }
   }
 
@@ -148,6 +150,7 @@ export class BookService {
     return {
       ...book,
       dateOfPublication: book.dateOfPublication.toDateString(),
+      //       dateOfPublication: book.dateOfPublication.toISOString().split('T')[0], // converting to string without time
     }
   }
 }

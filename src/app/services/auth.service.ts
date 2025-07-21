@@ -8,6 +8,7 @@ import { ITokenPayload } from '../models/user.model';
 import { IApiResponse } from '../models/apiResponse.model';
 import { IJwt } from '../models/token.model';
 import { BookService } from './book.service';
+import { Router } from '@angular/router';
 
 
 
@@ -23,7 +24,7 @@ export class AuthService {
   
   
 
-  constructor(private http: HttpClient, private bookService: BookService) {
+  constructor(private http: HttpClient, private bookService: BookService, public router: Router) {
     this.initializeAuth();
   }
 
@@ -31,31 +32,37 @@ export class AuthService {
   private initializeAuth() {
     const token = localStorage.getItem('accessToken');
     
-    // Since I'm under time preassure, I will I'm doing my own jwt decoding, since it's fairly straight forward in this case.
     if (token) {
       try {
         const payload = this.decodeJWT(token);
             
-        // Checking if token is expired
-        const currentTime = Math.floor(Date.now() / 1000);
-        if (payload.exp && payload.exp < currentTime) {
+        console.log('forcing refresh for testing:');
+        // Checking if token is still valid
+        // if (payload.exp && payload.exp >= Math.floor(Date.now() / 1000)) {
+        //   const user = this.extractUserFromTokenPayload(payload);
           
-          console.log('Token expired, refreshing session');
-          this.refreshToken()
-            //.subscribe({})
+        //   this.currentUserSubject.next(user);
+        //   this.isAuthenticatedSignal.set(true);
+        //   return;
+        // }
 
-          return;
-        }
+        this.refreshToken().subscribe({
+          next: (response) => {
+            console.log('Token refreshed successfully');
+          },
+          error: (error) => {
+            console.error('Token refresh failed:', error);
+          }
+        });
 
-        const user = this.extractUserFromTokenPayload(payload);
-        
-        this.currentUserSubject.next(user);
-        this.isAuthenticatedSignal.set(true);
       } catch (error) {
-        console.error('Invalid token format:', error);
-        this.logout();
+        console.error('Invalid token format 1:', error);
+        // this.logout();
       }
+    } else {
+      console.log('No token found, user is not authenticated');
     }
+
   }
 
 
@@ -67,7 +74,6 @@ export class AuthService {
       //createdAt: new Date(tokenPayload.iat ? tokenPayload.iat * 1000 : Date.now())
     };
 
-    console.log("user from token payload:", user);
 
     return user
   }
@@ -83,24 +89,10 @@ export class AuthService {
     }
   }
 
-  // // Helper method to check token expiration
-  // private isTokenExpired(token: string): boolean {
-  //   try {
-  //     const payload = this.decodeJWT(token);
-  //     const currentTime = Math.floor(Date.now() / 1000);
-  //     return payload.exp && payload.exp < currentTime;
-  //   } catch {
-  //     return true; // Treat invalid tokens as expired
-  //   }
-  // }
-
-
   register(userData: RegisterRequest): Observable<IApiResponse<ITokenPayload>> {
-    // console.log('Registering user with data:', userData, "to API:", `${this.API_URL}/auth/register`);
     return this.http.post<IApiResponse<ITokenPayload>>(`${this.API_URL}/auth/register`, userData)
       .pipe(
         tap(response => {
-          // console.log('Registration successful, setting session:', response);
           return this.setSession(response)
         }),
         catchError(this.handleError)
@@ -118,21 +110,22 @@ export class AuthService {
 
 
   refreshToken(): Observable<IApiResponse<ITokenPayload>> {
-
-    console.log('Refreshing token with refreshToken:', localStorage.getItem('refreshToken'), 'and accessToken:', localStorage.getItem('accessToken'));
-
+    console.log('refreshing token');
     return this.http.post<IApiResponse<ITokenPayload>>(`${this.API_URL}/auth/refresh`, {
       refreshToken: localStorage.getItem('refreshToken'),
       accessToken: localStorage.getItem('accessToken')
     })
     .pipe(
       tap(response => {
-        console.log('Refreshing token, response:', response);
+        console.log('refresh token response:', response);
         this.setSession(response);
+        this.currentUserSubject.next(this.extractUserFromTokenPayload(this.decodeJWT(response.data.accessToken)));
+        this.isAuthenticatedSignal.set(true);
+        this.router.navigate(['/']);
       }),
       catchError((arg) => {
         console.error('Error refreshing token:', arg);
-        this.logout();
+        //this.logout();
         return this.handleError(arg) 
       })
     );
@@ -147,9 +140,6 @@ export class AuthService {
   }
 
   
-
-
-
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
@@ -161,7 +151,6 @@ export class AuthService {
 
 
   private setSession(authResponse: IApiResponse<ITokenPayload>): void {
-    console.log('Setting session with auth response:', authResponse);
     localStorage.setItem('accessToken', authResponse.data.accessToken);
     localStorage.setItem('refreshToken', authResponse.data.refreshToken);
 

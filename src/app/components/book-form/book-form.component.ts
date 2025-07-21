@@ -167,11 +167,7 @@ export class BookFormComponent implements OnInit {
       return;
     }
 
-    console.log('Loaded book:', book);
-
     this.bookForm.patchValue({ ...book, dateOfPublication: book.dateOfPublication.getFullYear() });
-
-    console.log('bookForm after patchValue:', this.bookForm.value);
 
     this.loading = false;
     // this.bookService.get(this.bookId!).subscribe({
@@ -191,9 +187,7 @@ export class BookFormComponent implements OnInit {
       this.loading = true;
       this.errorMessage = '';
       
-      console.log('Form submitted with values:', this.bookForm.value);
       const bookData: IBook = {...this.bookForm.value, dateOfPublication: new Date(this.bookForm.value.dateOfPublication, 0, 1)};
-      console.log('Book data to be sent:', bookData);
       
       const request = this.isEditing 
         ? this.bookService.updateBook(this.bookId!, bookData)
