@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BookService } from '../../services/book.service';
-import { Book, IBookHttpObj } from '../../models/book.model';
+import { IBook } from '../../models/book.model';
 
 @Component({
   selector: 'app-book-form',
@@ -80,11 +80,11 @@ import { Book, IBookHttpObj } from '../../models/book.model';
                     <input 
                       type="number" 
                       class="form-control"
-                      formControlName="publicationYear"
+                      formControlName="dateOfPublication"
                       min="0"
                       max="String(new Date().getFullYear())"
-                      [class.is-invalid]="bookForm.get('publicationYear')?.invalid && bookForm.get('publicationYear')?.touched">
-                    <div class="invalid-feedback" *ngIf="bookForm.get('publicationYear')?.invalid && bookForm.get('publicationYear')?.touched">
+                      [class.is-invalid]="bookForm.get('dateOfPublication')?.invalid && bookForm.get('dateOfPublication')?.touched">
+                    <div class="invalid-feedback" *ngIf="bookForm.get('dateOfPublication')?.invalid && bookForm.get('dateOfPublication')?.touched">
                       Please enter a valid publication year
                     </div>
                   </div>
@@ -144,7 +144,7 @@ export class BookFormComponent implements OnInit {
       title: ['', Validators.required],
       author: ['', Validators.required],
       genre: ['', /*Validators.required*/],
-      publicationYear: ['', [Validators.required, Validators.min(1000), Validators.max(2025)]],
+      dateOfPublication: ['', [Validators.required, Validators.min(1000), Validators.max(2025)]],
       description: ['']
     });
   }
@@ -159,17 +159,31 @@ export class BookFormComponent implements OnInit {
   }
 
   loadBook(): void {
-    this.loading = true;
-    this.bookService.getBook(this.bookId!).subscribe({
-      next: (res) => {
-        this.bookForm.patchValue(res.data);
-        this.loading = false;
-      },
-      error: (error) => {
-        this.errorMessage = 'Error loading book: ' + error;
-        this.loading = false;
-      }
-    });
+    // this.loading = true;
+    const book = this.bookService.getBookById(Number(this.bookId));
+    if (!book) {
+      this.errorMessage = 'Book not found';
+      this.loading = false;
+      return;
+    }
+
+    console.log('Loaded book:', book);
+
+    this.bookForm.patchValue({ ...book, dateOfPublication: book.dateOfPublication.getFullYear() });
+
+    console.log('bookForm after patchValue:', this.bookForm.value);
+
+    this.loading = false;
+    // this.bookService.get(this.bookId!).subscribe({
+    //   next: (res) => {
+    //     this.bookForm.patchValue(res.data);
+    //     this.loading = false;
+    //   },
+    //   error: (error) => {
+    //     this.errorMessage = 'Error loading book: ' + error;
+    //     this.loading = false;
+    //   }
+    // });
   }
 
   onSubmit(): void {
@@ -178,12 +192,13 @@ export class BookFormComponent implements OnInit {
       this.errorMessage = '';
       
       console.log('Form submitted with values:', this.bookForm.value);
-      const bookData: IBookHttpObj = {...this.bookForm.value, DateOfPublication: new Date(this.bookForm.value.publicationYear, 0, 1)};
+      const bookData: IBook = {...this.bookForm.value, dateOfPublication: new Date(this.bookForm.value.dateOfPublication, 0, 1)};
       console.log('Book data to be sent:', bookData);
       
       const request = this.isEditing 
         ? this.bookService.updateBook(this.bookId!, bookData)
         : this.bookService.createBook(bookData);
+        
         
       request.subscribe({
         next: () => {
@@ -194,14 +209,6 @@ export class BookFormComponent implements OnInit {
           this.loading = false;
         }
       });
-    }
-  }
-
-
-    private bookModelToHttpObj(book: Book): IBookHttpObj {
-    return {
-      ...book,
-      dateOfPublication: book.dateOfPublication.toUTCString(),
     }
   }
 }
