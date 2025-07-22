@@ -4,7 +4,7 @@ import { catchError, map, Observable, tap } from 'rxjs';
 import { IBook, IBookHttpObj } from '../models/book.model';
 import { environment } from 'src/environments/environment';
 import { IApiResponse } from '../models/apiResponse.model';
-import { data } from 'cypress/types/jquery';
+
 
 @Injectable({
   providedIn: 'root'
@@ -23,14 +23,9 @@ export class BookService {
   private errorSignal = signal<string | null>(null);
   public readonly error = this.errorSignal.asReadonly();
 
-  // Computed signals for derived state
-  // public readonly bookCount = computed(() => this.books().length);
-  // public readonly hasBooks = computed(() => this.books().length > 0);
-
-  // https://stackoverflow.com/questions/50067218/where-to-store-global-data-in-angular
-  // execChange: Subject<any> = new Subject<any>();
 
   constructor(private http: HttpClient) {}
+
 
   loadBooks(): void {
     this.loadingSignal.set(true);
@@ -68,14 +63,16 @@ export class BookService {
     },
   }
 
+
   private getBooks(): Observable<IApiResponse<IBookHttpObj[]>> {
     return this.http.get<IApiResponse<IBookHttpObj[]>>(`${this.API_URL}/books`)
   }
 
+
   getBookById(id: number): IBook | undefined {
     return this.store.getById(id);
-    // return this.http.get<IApiResponse<IBookHttpObj>>(`${this.API_URL}/books/${id}`);
   }
+
 
   createBook(book: IBook): Observable<{success: boolean, message: string}> {
     return this.http.post<IApiResponse<IBookHttpObj>>(`${this.API_URL}/books`, this.bookModelToHttpObj(book)).pipe(
@@ -94,7 +91,7 @@ export class BookService {
     )
   }
 
-  // updateBook(id: string, book: Partial<IBookHttpObj>): Observable<IApiResponse<IBookHttpObj>> {
+
   updateBook(id: string, book: IBook): Observable<{success: boolean, message: string}> {
     return this.http.put<IApiResponse<IBookHttpObj>>(`${this.API_URL}/books/${id}`, book).pipe(
       map(res => {
@@ -111,6 +108,7 @@ export class BookService {
       })
     );
   }
+
 
   deleteBook(id: number): Observable<{success: boolean, message: string}> {
     return this.http.delete<IApiResponse<IBookHttpObj>>(`${this.API_URL}/books/${id}`).pipe(
@@ -135,19 +133,22 @@ export class BookService {
   }
 
 
-
   private httpBookToModel(book: IBookHttpObj): IBook {
     return {
       ...book,
       id: book.id || -1,
       dateOfPublication: new Date(book.dateOfPublication),
+      // dateOfPublication: book.dateOfPublication.toISOString().split('T')[0], // converting to string without time
+
     }
   }
 
+  
   private bookModelToHttpObj(book: IBook): IBookHttpObj {
     return {
       ...book,
       dateOfPublication: book.dateOfPublication.toDateString(),
+      //       dateOfPublication: book.dateOfPublication.toISOString().split('T')[0], // converting to string without time
     }
   }
 }

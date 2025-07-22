@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -90,6 +90,12 @@ export class RegisterComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+
+    effect(() => {
+      if (this.authService.isAuthenticated()) {
+        this.router.navigate(['/']);
+      }
+    })
   }
 
   onSubmit(): void {
@@ -98,9 +104,6 @@ export class RegisterComponent {
       this.errorMessage = '';
       
       this.authService.register(this.registerForm.value).subscribe({
-        next: () => {
-          this.router.navigate(['/']);
-        },
         error: (error) => {
           this.errorMessage = error;
           this.loading = false;
