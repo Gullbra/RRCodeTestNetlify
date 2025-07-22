@@ -93,7 +93,7 @@ export class BookService {
 
 
   updateBook(id: string, book: IBook): Observable<{success: boolean, message: string}> {
-    return this.http.put<IApiResponse<IBookHttpObj>>(`${this.API_URL}/books/${id}`, book).pipe(
+    return this.http.put<IApiResponse<IBookHttpObj>>(`${this.API_URL}/books/${id}`, this.bookModelToHttpObj(book)).pipe(
       map(res => {
         if(res.success) {
           this.store.update(this.httpBookToModel(res.data));
@@ -138,17 +138,18 @@ export class BookService {
       ...book,
       id: book.id || -1,
       dateOfPublication: new Date(book.dateOfPublication),
-      // dateOfPublication: book.dateOfPublication.toISOString().split('T')[0], // converting to string without time
-
     }
   }
 
   
   private bookModelToHttpObj(book: IBook): IBookHttpObj {
+
+    const tempDate = new Date(book.dateOfPublication);
+    tempDate.setMinutes(tempDate.getMinutes() - tempDate.getTimezoneOffset()); // Adjusting for timezone offset
+
     return {
       ...book,
-      dateOfPublication: book.dateOfPublication.toDateString(),
-      //       dateOfPublication: book.dateOfPublication.toISOString().split('T')[0], // converting to string without time
+      dateOfPublication: tempDate.toISOString(),
     }
   }
 }
