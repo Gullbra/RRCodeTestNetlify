@@ -84,7 +84,6 @@ import { IBook, IBookHttpObj } from '../../models/book.model';
 })
 export class HomeComponent implements OnInit {
   bookService = inject(BookService);
-  // books: IBook[] = [];
   bookToDelete: IBook | null = null;
 
   constructor(
@@ -102,7 +101,10 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // console.log('HomeComponent initialized');
     this.bookService.loadBooks()
+    // console.log('Books loaded:', this.bookService.books());
+    // console.log('Books loading:', this.bookService.loading());
   }
 
   deleteBook(book: IBook): void {
