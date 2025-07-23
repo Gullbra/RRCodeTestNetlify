@@ -30,7 +30,6 @@ export class AuthInterceptor implements HttpInterceptor {
     // Handle token refresh logic. Untested, but looks simple enough.
     return next.handle(req)
       .pipe(
-        tap(req => console.log('Request sent:', req)),
         catchError((error: HttpErrorResponse) => {
           if (error.status === 401 && token) {
             return this.injector.get(AuthService).refreshToken().pipe(
