@@ -12,6 +12,7 @@ import { BookFormComponent } from './components/book-form/book-form.component';
 import { QuotesComponent } from './components/quotes/quotes.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { BookService } from './services/book.service';
+import { BooksListComponent } from './components/book-list/books-list.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { BookService } from './services/book.service';
     RegisterComponent,
     HomeComponent,
     BookFormComponent,
-    QuotesComponent
+    QuotesComponent,
+    BooksListComponent
   ],
   imports: [
     BrowserModule,

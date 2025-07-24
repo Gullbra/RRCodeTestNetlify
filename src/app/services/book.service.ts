@@ -19,6 +19,9 @@ export class BookService {
   private loadingSignal = signal<boolean>(false);
   public readonly loading = this.loadingSignal.asReadonly();
 
+  private hasLoadedSignal = signal<boolean>(false);
+  public readonly hasLoaded = this.hasLoadedSignal.asReadonly();
+
   // Error state signal
   private errorSignal = signal<string | null>(null);
   public readonly error = this.errorSignal.asReadonly();
@@ -28,19 +31,22 @@ export class BookService {
 
 
   loadBooks(): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-
-    this.getBooks().subscribe({
-      next: (response: IApiResponse<IBookHttpObj[]>) => {
-        this.booksSignal.set(response.data.map(this.httpBookToModel) || []);
-        this.loadingSignal.set(false);
-      },
-      error: (error) => {
-        this.errorSignal.set('Failed to load books');
-        this.loadingSignal.set(false);
-      }
-    });
+    if (!this.hasLoaded()) {
+      this.loadingSignal.set(true);
+      this.errorSignal.set(null);
+  
+      this.getBooks().subscribe({
+        next: (response: IApiResponse<IBookHttpObj[]>) => {
+          this.booksSignal.set(response.data.map(this.httpBookToModel) || []);
+          this.loadingSignal.set(false);
+          this.hasLoadedSignal.set(true);
+        },
+        error: (error) => {
+          this.errorSignal.set('Failed to load books');
+          this.loadingSignal.set(false);
+        }
+      });
+    }
   }
 
 
