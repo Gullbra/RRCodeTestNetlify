@@ -6,8 +6,12 @@ import { IBook } from '../../models/book.model';
 @Component({
   selector: 'app-books-list',
   template: `
-    <div class="route-container">
-      <div class="row" *ngIf="!bookService.loading() && (bookService.books().length > 0); else noBooks">
+    <!-- style="display: contents;" -->
+    <div class="route-container" 
+    >
+    <!-- style="width: 100%; height: 100%;"  -->
+      <div 
+        class="row" *ngIf="!bookService.loading() && (bookService.books().length > 0); else noBooks">
         <div class="col-md-6 col-lg-4 mb-4" *ngFor="let book of bookService.books()">
           <div class="card h-100">
             <div class="card-body">

@@ -170,8 +170,8 @@
 }
 
 
-/* teat */
-.animated-router ~ * {
+/* test */
+/* .animated-router ~ * {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -180,4 +180,4 @@
 .route-container {
   position: relative;
   overflow: hidden;
-}
+} */

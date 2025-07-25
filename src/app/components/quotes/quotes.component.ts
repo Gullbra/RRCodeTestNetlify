@@ -8,8 +8,10 @@ interface Quote {
 
 @Component({
   selector: 'app-quotes',
+  // style="width: 50%;"
   template: `
-    <div class="row route-container">
+    <div class="row route-container" 
+    >
       <div class="col-12">
         <h1 class="mb-4">
           <i class="fas fa-quote-left me-2"></i>Inspirational Quotes

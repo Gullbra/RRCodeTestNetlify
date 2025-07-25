@@ -1,21 +1,13 @@
-// import { Component } from '@angular/core';
-// import { ActivatedRoute, Router, RouterOutlet  } from '@angular/router';
-// import { routeTransitions } from 'src/app/route-transition';
 
-// import {
-//   trigger, transition, style, query, group, animate
-// } from '@angular/animations';
-// import { RouterOutlet } from '@angular/router';
-
-
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet, NavigationEnd } from '@angular/router';
-import { routeTransitions  } from 'src/app/route-transition';
+import { routeTransitions } from 'src/app/route-transition';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-home',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="row border">
       <div class="col-12">
@@ -27,21 +19,25 @@ import { Subject } from 'rxjs';
             <i class="fas fa-plus me-2"></i>Add Book
           </button>
         </div>
-        
-
-        <!-- Router outlet for child routes -->
-        <!-- style="display: contents;" -->
+       
+        <!-- class="d-block position-relative overflow-hidden"  -->
         <div
           [@routeTransitions]="getRouteAnimationData(outlet)"
-          class="d-block position-relative overflow-hidden animated-router"
+          style="display: contents;"
         >
-          <router-outlet #outlet="outlet"></router-outlet>
+          <!-- Router outlet for child routes -->
+          <!-- style="background-color: green; display: flex; flex-direction: row; width: 100%; flex-wrap: nowrap; flex-shrink: 0; flex-grow: 0;" -->
+          <!-- style="width: 200%; flex-wrap: nowrap; display: flex; flex-direction: row; flex-shrink: 0; flex-grow: 0;" -->
+          <div class="animated-router"
+          >
+            <router-outlet #outlet="outlet"></router-outlet>
+          </div>
         </div>
       </div>
     </div>
   `,
   animations: [
-    routeTransitions 
+    routeTransitions
   ]
 })
 export class HomeComponent implements OnDestroy {
@@ -69,6 +65,8 @@ export class HomeComponent implements OnDestroy {
   }
 
   getRouteAnimationData(outlet: RouterOutlet) {
-    return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
+    const animationData = outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
+    return animationData || '';
   }
 }
+
