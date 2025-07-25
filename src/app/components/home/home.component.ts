@@ -5,20 +5,39 @@ import { routeTransitions } from 'src/app/route-transition';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
+
 @Component({
   selector: 'app-home',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="row border">
+    <div class="row ">
       <div class="col-12">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h1 (click)="router.navigate(['/'])"><i class="fas fa-book me-2"></i>My Books</h1>
-          <h2 (click)="router.navigate(['/quotes'])">Quotes</h2>
+        <div class="d-flex justify-content-around align-items-center mb-4">
+          
+          <div>
+            <h2 (click)="router.navigate(['/'])"> 
+              <i class="fas fa-book me-2"></i>
+              My Books
+            </h2>
 
-          <button class="btn btn-primary" (click)="router.navigate(['/books/add'])">
-            <i class="fas fa-plus me-2"></i>Add Book
-          </button>
+            <div  class="underline" [ngClass]="{'aktive': this.router.url === '/'}"></div>
+          </div>
+
+          <div>            
+            <h2 (click)="router.navigate(['/quotes'])">
+              <i class="fas fa-quote-left me-2"></i>
+              Inspirational Quotes
+            </h2>
+          
+            <div class="underline" [ngClass]="{'aktive': this.router.url === '/quotes'}" ></div>
+          </div>
+
         </div>
+        <!-- 
+        <div>
+          <div [ngClass]="{'border-bottom': this.router.url === '/'}"></div>
+          <div [ngClass]="{'border-bottom': this.router.url === '/quotes'}"></div>
+        </div> -->
        
         <!-- class="d-block position-relative overflow-hidden"  -->
         <div
@@ -35,6 +54,18 @@ import { Subject } from 'rxjs';
         </div>
       </div>
     </div>
+
+    <style>
+      .aktive {
+        background-color: white;
+      }
+      .underline {
+        margin-top: 20px;
+        height: 2px;
+        border-radius: 4px;
+        /* background-color: transparent; */
+      }
+    </style>
   `,
   animations: [
     routeTransitions

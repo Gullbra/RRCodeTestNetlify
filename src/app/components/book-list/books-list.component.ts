@@ -9,6 +9,11 @@ import { IBook } from '../../models/book.model';
     <!-- style="display: contents;" -->
     <div class="route-container" 
     >
+      <div class="row ">
+          <button class="btn btn-primary" (click)="router.navigate(['/books/add'])">
+            <i class="fas fa-plus me-2"></i>Add Book
+          </button>
+      </div>
     <!-- style="width: 100%; height: 100%;"  -->
       <div 
         class="row" *ngIf="!bookService.loading() && (bookService.books().length > 0); else noBooks">
