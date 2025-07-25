@@ -12,12 +12,13 @@ import { BooksListComponent } from './components/book-list/books-list.component'
 const routes: Routes = [
   // { path: '', component: HomeComponent, canActivate: [AuthGuard] },
   { 
-    path: '', 
+    path: '',
+    // redirectTo: '/list', 
     component: HomeComponent, 
     canActivate: [AuthGuard],
     children: [
-      { path: '', component: BooksListComponent },
-      { path: 'quotes', component: QuotesComponent }
+      { path: '', component: BooksListComponent, data: { animation: 'booksList' } },
+      { path: 'quotes', component: QuotesComponent, data: { animation: 'quotes' } },
     ]
   },
   { path: 'login', component: LoginComponent },

@@ -9,7 +9,7 @@ interface Quote {
 @Component({
   selector: 'app-quotes',
   template: `
-    <div class="row">
+    <div class="row route-container">
       <div class="col-12">
         <h1 class="mb-4">
           <i class="fas fa-quote-left me-2"></i>Inspirational Quotes
@@ -102,4 +102,8 @@ export class QuotesComponent {
       book: "On Writing"
     }
   ];
+
+  ngOnInit() {
+    console.log("quote init")
+  }
 }
