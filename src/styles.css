@@ -171,13 +171,50 @@
 
 
 /* test */
-/* .animated-router ~ * {
-  position: absolute;
-  width: 100%;
+/* .animated-router ~ * { */
+.child-route-outlet-wrapper-wrapper {
+  border: 1px solid blue;
+  position: relative;
+  width: 200%;
+  display: inline-block;
+  /* 
+  display: contents; 
   height: 100%;
+  */
+}
+
+.child-route-outlet-wrapper {
+  border: 1px solid salmon;
+
+  display: inline-block;
+  width: 100%;
+  overflow: hidden;
+  /* 
+  position: relative;
+  display: flex;
+  flex-direction: row; 
+  height: 100%;
+   */
 }
 
 .route-container {
-  position: relative;
-  overflow: hidden;
-} */
+  border: 1px solid #28a745; 
+  /* position: fixed; */
+  display: inline-block;
+  width: 50%;
+  
+  /* 
+  height: 100%;
+  flex-grow: 0;
+  flex-shrink: 0; 
+  overflow: hidden; 
+  position: absolute;
+  */
+}
+
+.path-active {
+  background-color: var(--primary-color);
+}
+[data-bs-theme="dark"] .path-active {
+  background-color: var(--light-color);
+}

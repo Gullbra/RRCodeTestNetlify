@@ -10,12 +10,13 @@ interface Quote {
   selector: 'app-quotes',
   // style="width: 50%;"
   template: `
-    <div class="row route-container" 
+    <!-- row -->
+    <div class="route-container" 
     >
       <div class="col-12">
-        <h1 class="mb-4">
+        <!-- <h1 class="mb-4">
           <i class="fas fa-quote-left me-2"></i>Inspirational Quotes
-        </h1>
+        </h1> -->
         
         <div class="row">
           <div class="col-md-6 col-lg-4 mb-4" *ngFor="let quote of quotes; let i = index">

@@ -11,44 +11,28 @@ import { Subject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="row ">
-      <div class="col-12">
+      <div class="col-12" style="border: solid 1px purple;">
         <div class="d-flex justify-content-around align-items-center mb-4">
-          
           <div>
-            <h2 (click)="router.navigate(['/'])"> 
-              <i class="fas fa-book me-2"></i>
-              My Books
-            </h2>
-
-            <div  class="underline" [ngClass]="{'aktive': this.router.url === '/'}"></div>
+            <h2 (click)="router.navigate(['/'])"><i class="fas fa-book me-2"></i>My Books</h2>
+            <div class="underline" [ngClass]="{'path-active': this.router.url === '/'}"></div>
           </div>
 
           <div>            
-            <h2 (click)="router.navigate(['/quotes'])">
-              <i class="fas fa-quote-left me-2"></i>
-              Inspirational Quotes
-            </h2>
-          
-            <div class="underline" [ngClass]="{'aktive': this.router.url === '/quotes'}" ></div>
+            <h2 (click)="router.navigate(['/quotes'])"><i class="fas fa-quote-left me-2"></i>Inspirational Quotes</h2>
+            <div class="underline" [ngClass]="{'path-active': this.router.url === '/quotes'}" ></div>
           </div>
-
         </div>
-        <!-- 
-        <div>
-          <div [ngClass]="{'border-bottom': this.router.url === '/'}"></div>
-          <div [ngClass]="{'border-bottom': this.router.url === '/quotes'}"></div>
-        </div> -->
        
         <!-- class="d-block position-relative overflow-hidden"  -->
         <div
           [@routeTransitions]="getRouteAnimationData(outlet)"
-          style="display: contents;"
+          class="child-route-outlet-wrapper-wrapper"
         >
           <!-- Router outlet for child routes -->
           <!-- style="background-color: green; display: flex; flex-direction: row; width: 100%; flex-wrap: nowrap; flex-shrink: 0; flex-grow: 0;" -->
           <!-- style="width: 200%; flex-wrap: nowrap; display: flex; flex-direction: row; flex-shrink: 0; flex-grow: 0;" -->
-          <div class="animated-router"
-          >
+          <div class="child-route-outlet-wrapper">
             <router-outlet #outlet="outlet"></router-outlet>
           </div>
         </div>
@@ -56,9 +40,12 @@ import { Subject } from 'rxjs';
     </div>
 
     <style>
-      .aktive {
-        background-color: white;
+      /* .path-active {
+        background-color: var(--dark-color);
       }
+      .pathActiveLight {
+        background-color: var(--light-color);
+      } */
       .underline {
         margin-top: 20px;
         height: 2px;
