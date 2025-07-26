@@ -158,7 +158,7 @@
 
 /* Form validation styles */
 .is-invalid {
-  border-color: #dc3545;
+  /* border-color: #dc3545; */
 }
 
 .invalid-feedback {
@@ -167,4 +167,34 @@
   margin-top: 0.25rem;
   font-size: 0.875rem;
   color: #dc3545;
+}
+
+
+
+/* For routing animation in home, book-list and quotes components*/
+.child-route-outlet-wrapper-wrapper {
+  position: relative;
+  width: 100%;
+  display: inline-block;
+  overflow: hidden;
+  z-index: 1;
+  padding-top: 10px;
+}
+
+.child-route-outlet-wrapper {
+  display: inline-block;
+  width: 200%;
+}
+
+.route-container {
+  display: inline-block;
+  width: 50%;
+  z-index: 0;
+}
+
+.path-active {
+  background-color: var(--primary-color);
+}
+[data-bs-theme="dark"] .path-active {
+  background-color: var(--light-color);
 }

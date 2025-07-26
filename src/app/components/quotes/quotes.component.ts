@@ -9,12 +9,8 @@ interface Quote {
 @Component({
   selector: 'app-quotes',
   template: `
-    <div class="row">
-      <div class="col-12">
-        <h1 class="mb-4">
-          <i class="fas fa-quote-left me-2"></i>Inspirational Quotes
-        </h1>
-        
+    <div class="route-container" >
+      <div class="col-12">        
         <div class="row">
           <div class="col-md-6 col-lg-4 mb-4" *ngFor="let quote of quotes; let i = index">
             <div class="card h-100 quote-card">
@@ -102,4 +98,8 @@ export class QuotesComponent {
       book: "On Writing"
     }
   ];
+
+  ngOnInit() {
+    console.log("quote init")
+  }
 }

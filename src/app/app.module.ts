@@ -12,6 +12,8 @@ import { BookFormComponent } from './components/book-form/book-form.component';
 import { QuotesComponent } from './components/quotes/quotes.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { BookService } from './services/book.service';
+import { BooksListComponent } from './components/book-list/books-list.component';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -20,10 +22,12 @@ import { BookService } from './services/book.service';
     RegisterComponent,
     HomeComponent,
     BookFormComponent,
-    QuotesComponent
+    QuotesComponent,
+    BooksListComponent
   ],
   imports: [
     BrowserModule,
+    // BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule
@@ -34,7 +38,8 @@ import { BookService } from './services/book.service';
       useClass: AuthInterceptor,
       multi: true
     },
-    BookService
+    BookService,
+    provideAnimations()
   ],
   bootstrap: [AppComponent]
 })
