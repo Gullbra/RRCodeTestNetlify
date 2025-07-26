@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="row ">
-      <div class="col-12" style="border: solid 1px purple;">
+      <div class="col-12" >
         <div class="d-flex justify-content-around align-items-center mb-4">
           <div>
             <h2 (click)="router.navigate(['/'])"><i class="fas fa-book me-2"></i>My Books</h2>
@@ -24,14 +24,12 @@ import { Subject } from 'rxjs';
           </div>
         </div>
        
-        <!-- class="d-block position-relative overflow-hidden"  -->
+        <!-- "Routin wrapperg"  -->
         <div
           [@routeTransitions]="getRouteAnimationData(outlet)"
           class="child-route-outlet-wrapper-wrapper"
         >
           <!-- Router outlet for child routes -->
-          <!-- style="background-color: green; display: flex; flex-direction: row; width: 100%; flex-wrap: nowrap; flex-shrink: 0; flex-grow: 0;" -->
-          <!-- style="width: 200%; flex-wrap: nowrap; display: flex; flex-direction: row; flex-shrink: 0; flex-grow: 0;" -->
           <div class="child-route-outlet-wrapper">
             <router-outlet #outlet="outlet"></router-outlet>
           </div>
@@ -40,17 +38,10 @@ import { Subject } from 'rxjs';
     </div>
 
     <style>
-      /* .path-active {
-        background-color: var(--dark-color);
-      }
-      .pathActiveLight {
-        background-color: var(--light-color);
-      } */
       .underline {
         margin-top: 20px;
         height: 2px;
         border-radius: 4px;
-        /* background-color: transparent; */
       }
     </style>
   `,

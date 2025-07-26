@@ -6,16 +6,7 @@ import { IBook } from '../../models/book.model';
 @Component({
   selector: 'app-books-list',
   template: `
-    <!-- style="display: contents;" -->
-    <div class="route-container">
-      <!-- <div class="row ">
-        <button class="btn btn-primary" (click)="router.navigate(['/books/add'])">
-          <i class="fas fa-plus me-2"></i>Add Book
-        </button>
-      </div> -->
-
-      <!-- style="width: 100%; height: 100%;"  -->
-
+    <div class="route-container">        
       <div class="row" *ngIf="!bookService.loading() && (bookService.books().length > 0); else noBooks">
         <div class="col-md-6 col-lg-4 mb-4" *ngFor="let book of bookService.books()">
           <div class="card h-100">
@@ -43,6 +34,10 @@ import { IBook } from '../../models/book.model';
             </div>
           </div>
         </div>
+
+        <button class="btn btn-primary" (click)="router.navigate(['/books/add'])">
+          <i class="fas fa-plus me-2"></i>Add Book
+        </button>
       </div>
       
       <ng-template #noBooks>

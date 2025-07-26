@@ -10,8 +10,8 @@ export const routeTransitions  = trigger('routeTransitions', [
     // Animate both pages simultaneously
     // slide to left
     group([
-      query(':leave', [animate('0.6s ease-in-out', style({ left: '-50%' }))], { optional: true }),
-      query(':enter', [animate('0.6s ease-in-out', style({ left: '-50%' }))], { optional: true })
+      query(':leave', [animate('0.2s ease-in-out', style({ left: '-50%' }))], { optional: true }),
+      query(':enter', [animate('0.2s ease-in-out', style({ left: '-50%' }))], { optional: true })
     ])
   ]),
   
@@ -24,12 +24,11 @@ export const routeTransitions  = trigger('routeTransitions', [
     // Animate both pages simultaneously
     // slide to right
     group([
-      query(':leave', [animate('0.6s ease-in-out', style({ right: '-50%' }))], { optional: true }),
-      query(':enter', [animate('0.6s ease-in-out', style({ right: '50%' }))], { optional: true })
+      query(':leave', [animate('0.2s ease-in-out', style({ right: '-50%' }))], { optional: true }),
+      query(':enter', [animate('0.2s ease-in-out', style({ right: '50%' }))], { optional: true })
     ])
   ])
 ]);
-
 
 
 /*
