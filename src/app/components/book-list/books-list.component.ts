@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { IBook } from '../../models/book.model';
@@ -52,8 +52,9 @@ import { IBook } from '../../models/book.model';
       </ng-template>
   
       <!-- Delete Confirmation Modal -->
-      <div class="modal fade" id="deleteModal" tabindex="-1">
-        <div class="modal-dialog">
+      <!-- 
+      <div class="modal-dialog-fix modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog-fix modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Delete Book</h5>
@@ -68,7 +69,8 @@ import { IBook } from '../../models/book.model';
             </div>
           </div>
         </div>
-      </div>
+      </div> 
+      -->
     </div>
   `
 })
@@ -76,20 +78,94 @@ export class BooksListComponent implements OnInit {
   bookService = inject(BookService);
   bookToDelete: IBook | null = null;
 
+  private renderer = inject(Renderer2);
+  private modalElement: HTMLElement | null = null;
+
+  ngOnDestroy(): void {
+    // Clean up modal when component is destroyed
+    if (this.modalElement) {
+      document.body.removeChild(this.modalElement);
+    }
+  }
+
+  private createModal(): void {
+    // Create modal element
+    this.modalElement = this.renderer.createElement('div') as HTMLElement;
+    this.renderer.addClass(this.modalElement, 'modal');
+    this.renderer.addClass(this.modalElement, 'fade');
+    this.renderer.setAttribute(this.modalElement, 'id', 'deleteModal');
+    this.renderer.setAttribute(this.modalElement, 'tabindex', '-1');
+
+    this.modalElement.innerHTML = `
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Delete Book</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <span id="deleteModalText">Are you sure you want to delete this book?</span>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Append to body instead of component template
+    document.body.appendChild(this.modalElement);
+
+    // Add event listener for confirm delete button
+    const confirmBtn = this.modalElement.querySelector('#confirmDeleteBtn');
+    if (confirmBtn) {
+      this.renderer.listen(confirmBtn, 'click', () => this.confirmDelete());
+    }
+  }
+
+
   constructor(public router: Router) {}
 
   ngOnInit(): void {
     console.log("book list init")
     this.bookService.loadBooks();
+    this.createModal();
   }
 
   deleteBook(book: IBook): void {
+    // this.bookToDelete = book;
+    // const modal = new (window as any).bootstrap.Modal(document.getElementById('deleteModal'));
+    // modal.show();
     this.bookToDelete = book;
+    
+    // Update modal text
+    const modalText = document.getElementById('deleteModalText');
+    if (modalText) {
+      modalText.textContent = `Are you sure you want to delete "${book.title}"?`;
+    }
+    
     const modal = new (window as any).bootstrap.Modal(document.getElementById('deleteModal'));
     modal.show();
   }
 
   confirmDelete(): void {
+    // if (this.bookToDelete) {
+    //   this.bookService.deleteBook(this.bookToDelete.id).subscribe({
+    //     next: (res) => {
+    //       if(res.success) {
+    //         this.bookToDelete = null;
+    //       } else {
+    //         console.error('Delete failed:', res.message);
+    //       }
+    //       const modal = (window as any).bootstrap.Modal.getInstance(document.getElementById('deleteModal'));
+    //       modal.hide();
+    //     },
+    //     error: (error) => {
+    //       console.error('Error deleting book:', error);
+    //     }
+    //   });
+    // }
     if (this.bookToDelete) {
       this.bookService.deleteBook(this.bookToDelete.id).subscribe({
         next: (res) => {
