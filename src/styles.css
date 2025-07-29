@@ -177,7 +177,7 @@
   width: 100%;
   display: inline-block;
   overflow: hidden;
-  z-index: 1;
+  /* z-index: 1; */
   padding-top: 10px;
 }
 
@@ -189,7 +189,7 @@
 .route-container {
   display: inline-block;
   width: 50%;
-  z-index: 0;
+  /* z-index: 0; */
 }
 
 .path-active {
@@ -197,4 +197,8 @@
 }
 [data-bs-theme="dark"] .path-active {
   background-color: var(--light-color);
+}
+
+.modal-dialog-fix {
+  z-index: 99000 !important;
 }
