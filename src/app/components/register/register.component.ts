@@ -2,6 +2,7 @@ import { Component, effect } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { passwordComplexityValidator } from 'src/util/pwdReq';
 
 @Component({
   selector: 'app-register',
@@ -15,18 +16,6 @@ import { AuthService } from '../../services/auth.service';
             </h2>
             
             <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-              <!-- <div class="mb-3">
-                <label class="form-label">Name</label>
-                <input 
-                  type="text" 
-                  class="form-control"
-                  formControlName="name"
-                  [class.is-invalid]="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
-                <div class="invalid-feedback" *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
-                  Name is required
-                </div>
-              </div> -->
-              
               <div class="mb-3">
                 <label class="form-label">Email</label>
                 <input 
@@ -47,7 +36,21 @@ import { AuthService } from '../../services/auth.service';
                   formControlName="password"
                   [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
                 <div class="invalid-feedback" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
-                  Password must be at least 6 characters
+                  <div *ngIf="registerForm.get('password')?.errors?.['required']">
+                    Password is required
+                  </div>
+                  <div *ngIf="registerForm.get('password')?.errors?.['minlength']">
+                    Password must be at least 6 characters
+                  </div>
+                  <div *ngIf="registerForm.get('password')?.errors?.['noNumber']">
+                    Password must contain at least one number
+                  </div>
+                  <div *ngIf="registerForm.get('password')?.errors?.['noUppercase']">
+                    Password must contain at least one uppercase letter
+                  </div>
+                  <div *ngIf="registerForm.get('password')?.errors?.['noLowercase']">
+                    Password must contain at least one lowercase letter
+                  </div>
                 </div>
               </div>
               
@@ -86,9 +89,12 @@ export class RegisterComponent {
     public router: Router
   ) {
     this.registerForm = this.fb.group({
-      // name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]]
+      password: ['', [
+        Validators.required, 
+        Validators.minLength(6),
+        passwordComplexityValidator
+      ]]
     });
 
     effect(() => {
