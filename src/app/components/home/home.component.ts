@@ -19,12 +19,12 @@ import { Subject } from 'rxjs';
           </div>
 
           <div>            
-            <h2 (click)="router.navigate(['/quotes'])"><i class="fas fa-quote-left me-2"></i>Inspirational Quotes</h2>
+            <h2 (click)="router.navigate(['/quotes'])"><i class="fas fa-quote-left me-2"></i>My Quotes</h2>
             <div class="underline" [ngClass]="{'path-active': this.router.url === '/quotes'}" ></div>
           </div>
         </div>
        
-        <!-- "Routin wrapperg"  -->
+        <!-- "Routing wrapper"  -->
         <div
           [@routeTransitions]="getRouteAnimationData(outlet)"
           class="child-route-outlet-wrapper-wrapper"
