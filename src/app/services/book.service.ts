@@ -15,7 +15,7 @@ export class BookService {
   private booksSignal = signal<IBook[]>([]); // Private writable signal for books
   public readonly books = this.booksSignal.asReadonly(); // Public readonly signal for components to read
 
-    // Loading state signal
+  // Loading state signal
   private loadingSignal = signal<boolean>(false);
   public readonly loading = this.loadingSignal.asReadonly();
 

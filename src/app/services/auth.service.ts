@@ -4,7 +4,7 @@ import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { User, LoginRequest, RegisterRequest } from '../models/user.model';
 import { environment } from 'src/environments/environment';
-import { ITokenPayload } from '../models/user.model';
+import { ITokenPayload } from '../models/token.model';
 import { IApiResponse } from '../models/apiResponse.model';
 import { BookService } from './book.service';
 import { Router } from '@angular/router';
