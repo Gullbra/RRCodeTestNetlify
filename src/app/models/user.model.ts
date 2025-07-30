@@ -13,8 +13,3 @@ export interface RegisterRequest {
   email: string;
   password: string;
 }
-
-export interface ITokenPayload {
-  accessToken: string;
-  refreshToken: string;
-}

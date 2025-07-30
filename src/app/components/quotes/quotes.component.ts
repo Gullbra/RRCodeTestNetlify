@@ -1,32 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { IQuote } from 'src/app/models/quote.model';
+import { QuoteService } from 'src/app/services/quote.service';
 
-interface Quote {
-  text: string;
-  author: string;
-  book?: string;
-}
 
 @Component({
   selector: 'app-quotes',
   template: `
     <div class="route-container" >
-      <div class="col-12">        
-        <div class="row">
-          <div class="col-md-6 col-lg-4 mb-4" *ngFor="let quote of quotes; let i = index">
+      <div class="col-12"> 
+
+        <div class="row" *ngIf="!quoteService.loading() && (quoteService.quotes().length > 0); else noQuotes">
+          <div class="col-md-6 col-lg-4 mb-4" *ngFor="let quote of quoteService.quotes(); let i = index">
             <div class="card h-100 quote-card">
               <div class="card-body d-flex flex-column">
-                <div class="quote-number">{{ i + 1 }}</div>
+                <!-- <div class="quote-number">{{ i + 1 }}</div> -->
                 <blockquote class="blockquote flex-grow-1">
                   <p class="mb-0">"{{ quote.text }}"</p>
                 </blockquote>
                 <footer class="blockquote-footer mt-auto">
                   <cite title="Source Title">{{ quote.author }}</cite>
-                  <small *ngIf="quote.book" class="d-block text-muted">{{ quote.book }}</small>
+                  <small *ngIf="quote.source" class="d-block text-muted">{{ quote.source }}</small>
                 </footer>
               </div>
             </div>
           </div>
         </div>
+
+        <ng-template #noQuotes>
+          <div class="text-center py-5">
+            <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
+            <h3>No quotes yet</h3>
+            <!-- <p class="text-muted">Add your first book to get started!</p>
+            <button class="btn btn-primary" (click)="router.navigate(['/books/add'])">
+              <i class="fas fa-plus me-2"></i>Add Your First Book
+            </button> -->
+          </div>
+        </ng-template>
+
       </div>
     </div>
     
@@ -73,7 +83,17 @@ interface Quote {
   `
 })
 export class QuotesComponent {
-  quotes: Quote[] = [
+  quoteService = inject(QuoteService);
+
+  ngOnInit() {
+    console.log("quote init")
+    this.quoteService.loadQuotes();
+    console.log("quotes loaded", this.quoteService.quotes());
+  }
+}
+
+/*
+  quotes: Partial<IQuote>[] = [
     {
       text: "The only way to do great work is to love what you do.",
       author: "Steve Jobs"
@@ -81,25 +101,21 @@ export class QuotesComponent {
     {
       text: "A reader lives a thousand lives before he dies. The man who never reads lives only one.",
       author: "George R.R. Martin",
-      book: "A Dance with Dragons"
+      source: "A Dance with Dragons"
     },
     {
-      text: "So many books, so little time.",
+      text: "So many sources, so little time.",
       author: "Frank Zappa"
     },
     {
       text: "The more that you read, the more things you will know. The more that you learn, the more places you'll go.",
       author: "Dr. Seuss",
-      book: "I Can Read With My Eyes Shut!"
+      source: "I Can Read With My Eyes Shut!"
     },
     {
       text: "Books are a uniquely portable magic.",
       author: "Stephen King",
-      book: "On Writing"
+      source: "On Writing"
     }
   ];
-
-  ngOnInit() {
-    console.log("quote init")
-  }
-}
+*/
