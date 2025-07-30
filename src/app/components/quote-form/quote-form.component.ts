@@ -46,6 +46,21 @@ import { IQuote } from '../../models/quote.model';
                     </div>
                   </div>
                 </div>
+                
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Source *</label>
+                    <input 
+                      type="text" 
+                      class="form-control"
+                      formControlName="source"
+                      >
+                      <!-- [class.is-invalid]="quoteForm.get('author')?.invalid && quoteForm.get('author')?.touched" -->
+                    <!-- <div class="invalid-feedback" *ngIf="quoteForm.get('author')?.invalid && quoteForm.get('author')?.touched">
+                      Author is required
+                    </div> -->
+                  </div>
+                </div>
               </div>
               
               <div class="row">
@@ -61,7 +76,7 @@ import { IQuote } from '../../models/quote.model';
                 <button 
                   type="button" 
                   class="btn btn-secondary"
-                  (click)="router.navigate(['/'])">
+                  (click)="router.navigate(['/quotes'])">
                   <i class="fas fa-arrow-left me-2"></i>Cancel
                 </button>
                 <button 
@@ -96,7 +111,7 @@ export class QuoteFormComponent implements OnInit {
     this.quoteForm = this.fb.group({
       text: ['', Validators.required],
       author: ['', Validators.required],
-      // source: ['', Validators.required] // Assuming source is a required field
+      source: ['']  // Optional field
     });
   }
 
@@ -138,8 +153,10 @@ export class QuoteFormComponent implements OnInit {
       this.loading = true;
       this.errorMessage = '';
       
-      const quoteData: IQuote = {...this.quoteForm.value, dateOfPublication: new Date(this.quoteForm.value.dateOfPublication, 0, 1)};
-      
+      console.log("quote form value", this.quoteForm.value);
+      const quoteData: IQuote = {...this.quoteForm.value };
+      console.log("quote data", quoteData);
+
       const request = this.isEditing 
         ? this.quoteService.updateQuote(this.quoteId!, quoteData)
         : this.quoteService.createQuote(quoteData);
@@ -147,7 +164,7 @@ export class QuoteFormComponent implements OnInit {
         
       request.subscribe({
         next: () => {
-          this.router.navigate(['/']);
+          this.router.navigate(['/quotes']);
         },
         error: (error) => {
           this.errorMessage = error;

@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { IQuote } from 'src/app/models/quote.model';
 import { QuoteService } from 'src/app/services/quote.service';
 
@@ -21,19 +22,38 @@ import { QuoteService } from 'src/app/services/quote.service';
                   <cite title="Source Title">{{ quote.author }}</cite>
                   <small *ngIf="quote.source" class="d-block text-muted">{{ quote.source }}</small>
                 </footer>
+
+              </div>
+              <div class="card-footer">
+                <div class="btn-group w-100">
+                  <button 
+                    class="btn btn-outline-primary"
+                    (click)="router.navigate(['/quotes/edit', quote.id])">
+                    <i class="fas fa-edit"></i> Edit
+                  </button>
+                  <button 
+                    class="btn btn-outline-danger"
+                    (click)="deleteQuote(quote)">
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </div>
               </div>
             </div>
           </div>
+
+          <button class="btn btn-primary" (click)="router.navigate(['/quotes/add'])">
+            <i class="fas fa-plus me-2"></i>Add Quote
+          </button>
         </div>
 
         <ng-template #noQuotes>
           <div class="text-center py-5">
             <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
             <h3>No quotes yet</h3>
-            <!-- <p class="text-muted">Add your first book to get started!</p>
-            <button class="btn btn-primary" (click)="router.navigate(['/books/add'])">
-              <i class="fas fa-plus me-2"></i>Add Your First Book
-            </button> -->
+            <p class="text-muted">Add your first quote to get started!</p>
+            <button class="btn btn-primary" (click)="router.navigate(['/quotes/add'])">
+              <i class="fas fa-plus me-2"></i>Add Your First Quote
+            </button>
           </div>
         </ng-template>
 
@@ -84,13 +104,20 @@ import { QuoteService } from 'src/app/services/quote.service';
 })
 export class QuotesComponent {
   quoteService = inject(QuoteService);
+  constructor(public router: Router) {}
 
   ngOnInit() {
     console.log("quote init")
     this.quoteService.loadQuotes();
     console.log("quotes loaded", this.quoteService.quotes());
   }
+
+
+  deleteQuote (quote: IQuote): void {
+    console.log("delete quote", quote);
+  }
 }
+
 
 /*
   quotes: Partial<IQuote>[] = [
