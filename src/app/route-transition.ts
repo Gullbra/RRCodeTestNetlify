@@ -4,28 +4,28 @@ export const routeTransitions  = trigger('routeTransitions', [
 
   transition('* => quotes', [
     // init styles
-    query(':enter', [style({ position: 'relative', left: 0, top: 0 })], { optional: true }),
-    query(':leave', [style({ position: 'relative', left: 0, top: 0 })], { optional: true }),
+    query(':enter', [style({ position: 'relative', left: 0, top: 0, verticalAlign: 'top' })], { optional: true }),
+    query(':leave', [style({ position: 'relative', left: 0, top: 0, verticalAlign: 'top' })], { optional: true }),
     
     // Animate both pages simultaneously
     // slide to left
     group([
-      query(':enter', [animate('2s ease-in-out', style({ left: '-50%' }))], { optional: true }),
-      query(':leave', [animate('2s ease-in-out', style({ left: '-50%' }))], { optional: true }),
+      query(':enter', [animate('0.2s ease-in-out', style({ left: '-50%' }))], { optional: true }),
+      query(':leave', [animate('0.2s ease-in-out', style({ left: '-50%' }))], { optional: true }),
     ])
   ]),
   
 
   transition('* => booksList', [
     // init styles
-    query(':enter', [style({ position: 'relative', right: '100%', top: 0 })], { optional: true }),
-    query(':leave', [style({ position: 'relative', right: 0, top: 0 })], { optional: true }),
+    query(':enter', [style({ position: 'relative', right: '100%', top: 0, verticalAlign: 'top' })], { optional: true }),
+    query(':leave', [style({ position: 'relative', right: 0, top: 0, verticalAlign: 'top' })], { optional: true }),
     
     // Animate both pages simultaneously
     // slide to right
     group([
-      query(':enter', [animate('2s ease-in-out', style({ right: '50%' }))], { optional: true }),
-      query(':leave', [animate('2s ease-in-out', style({ right: '-50%' }))], { optional: true }),
+      query(':enter', [animate('0.2s ease-in-out', style({ right: '50%' }))], { optional: true }),
+      query(':leave', [animate('0.2s ease-in-out', style({ right: '-50%' }))], { optional: true }),
     ])
   ])
 ]);

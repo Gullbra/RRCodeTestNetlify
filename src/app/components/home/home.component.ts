@@ -28,7 +28,6 @@ import { Subject } from 'rxjs';
         <div
           [@routeTransitions]="getRouteAnimationData(outlet)"
           class="child-route-outlet-wrapper-wrapper m-0 p-0"
-          style="border: 1px solid pink;"
           id="lvl_0"
         >
           <!-- Router outlet for child routes -->
