@@ -4,62 +4,68 @@ import { IQuote } from 'src/app/models/quote.model';
 import { QuoteService } from 'src/app/services/quote.service';
 
 
-@Component({
-  selector: 'app-quotes',
-  template: `
-    <div class="route-container" >
-      <!-- <div style="border: 1px solid #007bff;" class="row" *ngIf="!quoteService.loading() && (quoteService.quotes().length > 0); else noQuotes"> -->
-      <div class="row" *ngIf="!quoteService.loading() && (quoteService.quotes().length > 0); else noQuotes">
-        <div class="col-md-6 col-lg-4 mb-4" *ngFor="let quote of quoteService.quotes(); let i = index">
-          <div class="card h-100 quote-card">
-            <div class="card-body d-flex flex-column">
-              <!-- <div class="quote-number">{{ i + 1 }}</div> -->
-              <blockquote class="blockquote flex-grow-1">
-                <p class="mb-0">"{{ quote.text }}"</p>
-              </blockquote>
-              <footer class="blockquote-footer mt-auto">
-                <cite title="Source Title">{{ quote.author }}</cite>
-                <small *ngIf="quote.source" class="d-block text-muted">{{ quote.source }}</small>
-              </footer>
+/*
+<div style="border: 1px solid #007bff;" class="row" *ngIf="!quoteService.loading() && (quoteService.quotes().length > 0); else noQuotes">
+<!-- <div class="row" *ngIf="!quoteService.loading() && (quoteService.quotes().length > 0); else noQuotes"> -->
+  <div class="col-md-6 col-lg-4 mb-4" *ngFor="let quote of quoteService.quotes(); let i = index">
+    <div class="card h-100 quote-card">
+      <div class="card-body d-flex flex-column">
+        <!-- <div class="quote-number">{{ i + 1 }}</div> -->
+        <blockquote class="blockquote flex-grow-1">
+          <p class="mb-0">"{{ quote.text }}"</p>
+        </blockquote>
+        <footer class="blockquote-footer mt-auto">
+          <cite title="Source Title">{{ quote.author }}</cite>
+          <small *ngIf="quote.source" class="d-block text-muted">{{ quote.source }}</small>
+        </footer>
 
-            </div>
-            <div class="card-footer">
-              <div class="btn-group w-100">
-                <button 
-                  class="btn btn-outline-primary"
-                  (click)="router.navigate(['/quotes/edit', quote.id])">
-                  <i class="fas fa-edit"></i> Edit
-                </button>
-                <button 
-                  class="btn btn-outline-danger"
-                  (click)="deleteQuote(quote)">
-                  <i class="fas fa-trash"></i> Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row align-items-center justify-content-center mt-4">
-          <button style="width: fit-content;" class="btn btn-primary rounded" (click)="router.navigate(['/quotes/add'])">
-            <i class="fas fa-plus me-2"></i>Add Quote
+      </div>
+      <div class="card-footer">
+        <div class="btn-group w-100">
+          <button 
+            class="btn btn-outline-primary"
+            (click)="router.navigate(['/quotes/edit', quote.id])">
+            <i class="fas fa-edit"></i> Edit
+          </button>
+          <button 
+            class="btn btn-outline-danger"
+            (click)="deleteQuote(quote)">
+            <i class="fas fa-trash"></i> Delete
           </button>
         </div>
       </div>
+    </div>
+  </div>
 
-      <ng-template #noQuotes>
-        <!-- <div style="border: 1px solid #007bff;" class="row"> -->
-        <div class="row">
-          <div class="text-center py-5">
-            <i class="fas fa-quote-left fa-3x text-muted mb-3"></i>
-            <h3>No quotes yet</h3>
-            <p class="text-muted">Add your first quote to get started!</p>
-            <button class="btn btn-primary" (click)="router.navigate(['/quotes/add'])">
-              <i class="fas fa-plus me-2"></i>Add Your First Quote
-            </button>
-          </div>
-        </div>
-      </ng-template>
+  <div class="row align-items-center justify-content-center mt-4">
+    <button style="width: fit-content;" class="btn btn-primary rounded" (click)="router.navigate(['/quotes/add'])">
+      <i class="fas fa-plus me-2"></i>Add Quote
+    </button>
+  </div>
+</div>
+
+<ng-template #noQuotes>
+  <div style="border: 1px solid #007bff;" class="row">
+  <!-- <div class="row"> -->
+    <div class="text-center py-5">
+      <i class="fas fa-quote-left fa-3x text-muted mb-3"></i>
+      <h3>No quotes yet</h3>
+      <p class="text-muted">Add your first quote to get started!</p>
+      <button class="btn btn-primary" (click)="router.navigate(['/quotes/add'])">
+        <i class="fas fa-plus me-2"></i>Add Your First Quote
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+*/
+
+
+@Component({
+  selector: 'app-quotes',
+  template: `
+    <div class="route-container m-0 p-0" style="background-color: bisque; width: 50%; height: 20px;">
+      <!-- <div style="background-color: bisque; width: 100px; height: 20px;"></div> -->
     </div>
     
     <style>

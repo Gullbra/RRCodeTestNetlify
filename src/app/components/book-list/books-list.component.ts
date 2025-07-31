@@ -3,63 +3,69 @@ import { Router } from '@angular/router';
 import { BookService } from '../../services/book.service';
 import { IBook } from '../../models/book.model';
 
-@Component({
-  selector: 'app-books-list',
-  template: `
-    <div class="route-container">        
-      <!-- <div style="border: 1px solid purple;" class="row" *ngIf="!bookService.loading() && (bookService.books().length > 0); else noBooks"> -->
-      <div class="row" *ngIf="!bookService.loading() && (bookService.books().length > 0); else noBooks">
-        <div class="row">
 
-          <div class="col-md-6 col-lg-4 mb-4" *ngFor="let book of bookService.books()">
-            <div class="card h-100">
-              <div class="card-body">
-                <h5 class="card-title">{{ book.title }}</h5>
-                <p class="card-text">
-                  <strong>Author:</strong> {{ book.author }}<br>
-                  <strong>Year:</strong> {{ book.dateOfPublication.getFullYear() }}<br>
-                </p>
-              </div>
-              
-              <div class="card-footer">
-                <div class="btn-group w-100">
-                  <button 
-                    class="btn btn-outline-primary"
-                    (click)="router.navigate(['/books/edit', book.id])">
-                    <i class="fas fa-edit"></i> Edit
-                  </button>
-                  <button 
-                    class="btn btn-outline-danger"
-                    (click)="deleteBook(book)">
-                    <i class="fas fa-trash"></i> Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+/*
+<div style="border: 1px solid purple;" class="row" *ngIf="!bookService.loading() && (bookService.books().length > 0); else noBooks">
+<!-- <div class="row" *ngIf="!bookService.loading() && (bookService.books().length > 0); else noBooks"> -->
+  <div class="row">
 
-        <!-- Button to add a new book -->
-        <div class="row align-items-center justify-content-center mt-4">
-          <button style="width: fit-content;" class="btn btn-primary rounded" (click)="router.navigate(['/books/add'])">
-            <i class="fas fa-plus me-2"></i>Add Book
-          </button>
+    <div class="col-md-6 col-lg-4 mb-4" *ngFor="let book of bookService.books()">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ book.title }}</h5>
+          <p class="card-text">
+            <strong>Author:</strong> {{ book.author }}<br>
+            <strong>Year:</strong> {{ book.dateOfPublication.getFullYear() }}<br>
+          </p>
         </div>
-      </div>
-      
-      <ng-template #noBooks>
-        <!-- <div style="border: 1px solid purple;" class="row"> -->
-        <div class="row"><
-          <div class="text-center py-5">
-            <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
-            <h3>No books yet</h3>
-            <p class="text-muted">Add your first book to get started!</p>
-            <button class="btn btn-primary" (click)="router.navigate(['/books/add'])">
-              <i class="fas fa-plus me-2"></i>Add Your First Book
+        
+        <div class="card-footer">
+          <div class="btn-group w-100">
+            <button 
+              class="btn btn-outline-primary"
+              (click)="router.navigate(['/books/edit', book.id])">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button 
+              class="btn btn-outline-danger"
+              (click)="deleteBook(book)">
+              <i class="fas fa-trash"></i> Delete
             </button>
           </div>
         </div>
-      </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Button to add a new book -->
+  <div class="row align-items-center justify-content-center mt-4">
+    <button style="width: fit-content;" class="btn btn-primary rounded" (click)="router.navigate(['/books/add'])">
+      <i class="fas fa-plus me-2"></i>Add Book
+    </button>
+  </div>
+</div>
+
+<ng-template #noBooks>
+  <div style="border: 1px solid purple;" class="row">
+  <!-- <div class="row">< -->
+    <div class="text-center py-5">
+      <i class="fas fa-book-open fa-3x text-muted mb-3"></i>
+      <h3>No books yet</h3>
+      <p class="text-muted">Add your first book to get started!</p>
+      <button class="btn btn-primary" (click)="router.navigate(['/books/add'])">
+        <i class="fas fa-plus me-2"></i>Add Your First Book
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+
+*/
+
+@Component({
+  selector: 'app-books-list',
+  template: `
+    <div id="lvl_3_book" class="route-container m-0 p-0" style="background-color: blue; width: 50%; height: 20px;">        
     </div>
   `
 })

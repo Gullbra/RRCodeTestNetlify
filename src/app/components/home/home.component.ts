@@ -27,11 +27,13 @@ import { Subject } from 'rxjs';
         <!-- "Routing wrapper"  -->
         <div
           [@routeTransitions]="getRouteAnimationData(outlet)"
-          class="child-route-outlet-wrapper-wrapper"
+          class="child-route-outlet-wrapper-wrapper m-0 p-0"
+          style="border: 1px solid pink;"
+          id="lvl_0"
         >
           <!-- Router outlet for child routes -->
-          <div class="child-route-outlet-wrapper">
-            <router-outlet #outlet="outlet"></router-outlet>
+          <div id="lvl_1" class="child-route-outlet-wrapper m-0 p-0" style="display: space;">
+            <router-outlet class="m-0 p-0" id="lvl_2" #outlet="outlet"></router-outlet>
           </div>
         </div>
       </div>
