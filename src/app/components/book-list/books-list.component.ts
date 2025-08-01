@@ -8,39 +8,36 @@ import { IBook } from '../../models/book.model';
   selector: 'app-books-list',
   template: `
     <div id="lvl_3_book" class="route-container m-0 p-0 w-50"> 
-      <div class="row m-0 p-0" *ngIf="!bookService.loading() && (bookService.books().length > 0); else noBooks">
-        <div class="row">
-
-          <div class="col-md-6 col-lg-4 mb-4" *ngFor="let book of bookService.books()">
-            <div class="card h-100">
-              <div class="card-body">
-                <h5 class="card-title">{{ book.title }}</h5>
-                <p class="card-text">
-                  <strong>Author:</strong> {{ book.author }}<br>
-                  <strong>Year:</strong> {{ book.dateOfPublication.getFullYear() }}<br>
-                </p>
-              </div>
-              
-              <div class="card-footer">
-                <div class="btn-group w-100">
-                  <button 
-                    class="btn btn-outline-primary"
-                    (click)="router.navigate(['/books/edit', book.id])">
-                    <i class="fas fa-edit"></i> Edit
-                  </button>
-                  <button 
-                    class="btn btn-outline-danger"
-                    (click)="deleteBook(book)">
-                    <i class="fas fa-trash"></i> Delete
-                  </button>
-                </div>
+      <div class="row" *ngIf="!bookService.loading() && (bookService.books().length > 0); else noBooks">
+        <div class="col-md-6 col-lg-4 mb-4" *ngFor="let book of bookService.books()">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ book.title }}</h5>
+              <p class="card-text">
+                <strong>Author:</strong> {{ book.author }}<br>
+                <strong>Year:</strong> {{ book.dateOfPublication.getFullYear() }}<br>
+              </p>
+            </div>
+            
+            <div class="card-footer">
+              <div class="btn-group w-100">
+                <button 
+                  class="btn btn-outline-primary"
+                  (click)="router.navigate(['/books/edit', book.id])">
+                  <i class="fas fa-edit"></i> Edit
+                </button>
+                <button 
+                  class="btn btn-outline-danger"
+                  (click)="deleteBook(book)">
+                  <i class="fas fa-trash"></i> Delete
+                </button>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Button to add a new book -->
-        <div class="row align-items-center justify-content-center mt-4">
+        <div class="d-flex align-items-center justify-content-center mt-4">
           <button style="width: fit-content;" class="btn btn-primary rounded" (click)="router.navigate(['/books/add'])">
             <i class="fas fa-plus me-2"></i>Add Book
           </button>

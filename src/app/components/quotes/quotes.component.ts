@@ -8,7 +8,7 @@ import { QuoteService } from 'src/app/services/quote.service';
   selector: 'app-quotes',
   template: `
     <div class="route-container m-0 p-0 w-50">
-       <div class="row" *ngIf="!quoteService.loading() && (quoteService.quotes().length > 0); else noQuotes">
+      <div class="row" *ngIf="!quoteService.loading() && (quoteService.quotes().length > 0); else noQuotes">
         <div class="col-md-6 col-lg-4 mb-4" *ngFor="let quote of quoteService.quotes(); let i = index">
           <div class="card h-100 quote-card">
             <div class="card-body d-flex flex-column">
@@ -39,7 +39,7 @@ import { QuoteService } from 'src/app/services/quote.service';
           </div>
         </div>
 
-        <div class="row align-items-center justify-content-center mt-4">
+        <div class="d-flex align-items-center justify-content-center mt-4">
           <button style="width: fit-content;" class="btn btn-primary rounded" (click)="router.navigate(['/quotes/add'])">
             <i class="fas fa-plus me-2"></i>Add Quote
           </button>
