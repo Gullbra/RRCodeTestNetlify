@@ -49,9 +49,10 @@ import { IBook } from '../../models/book.model';
               </div>
               
               <div class="row">
+                <!-- 
                 <div class="col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Genre *</label>
+                    <label class="form-label">Genre</label>
                     <select 
                       class="form-select"
                       formControlName="genre"
@@ -72,7 +73,8 @@ import { IBook } from '../../models/book.model';
                       Please select a genre
                     </div>
                   </div>
-                </div>
+                </div> 
+                -->
                 
                 <div class="col-md-6">
                   <div class="mb-3">
@@ -91,6 +93,7 @@ import { IBook } from '../../models/book.model';
                 </div>
               </div>
               
+              <!-- 
               <div class="mb-3">
                 <label class="form-label">Description</label>
                 <textarea 
@@ -98,7 +101,8 @@ import { IBook } from '../../models/book.model';
                   formControlName="description"
                   rows="4"
                   placeholder="Brief description of the book..."></textarea>
-              </div>
+              </div> 
+              -->
               
               <div class="alert alert-danger" *ngIf="errorMessage">
                 {{ errorMessage }}
@@ -143,9 +147,9 @@ export class BookFormComponent implements OnInit {
     this.bookForm = this.fb.group({
       title: ['', Validators.required],
       author: ['', Validators.required],
-      genre: ['', /*Validators.required*/],
+      // genre: ['', /*Validators.required*/],
       dateOfPublication: ['', [Validators.required, Validators.min(1000), Validators.max(2025)]],
-      description: ['']
+      // description: ['']
     });
   }
 

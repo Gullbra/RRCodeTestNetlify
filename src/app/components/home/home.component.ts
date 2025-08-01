@@ -59,14 +59,14 @@ export class HomeComponent implements OnDestroy {
     protected route: ActivatedRoute
   ) {
     // Track route changes for debugging
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      map(() => this.route.firstChild?.snapshot.data?.['animation'] || ''),
-      takeUntil(this.destroy$)
-    ).subscribe(animation => {
-      console.log('Route animation data:', animation);
-      this.currentRoute = animation;
-    });
+    // this.router.events.pipe(
+    //   filter(event => event instanceof NavigationEnd),
+    //   map(() => this.route.firstChild?.snapshot.data?.['animation'] || ''),
+    //   takeUntil(this.destroy$)
+    // ).subscribe(animation => {
+    //   console.log('Route animation data:', animation);
+    //   this.currentRoute = animation;
+    // });
   }
 
   ngOnDestroy() {

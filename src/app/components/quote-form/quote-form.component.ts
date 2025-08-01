@@ -21,7 +21,7 @@ import { IQuote } from '../../models/quote.model';
               <div class="row">
                 <div class="col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Text *</label>
+                    <label class="form-label">Quote *</label>
                     <input 
                       type="text" 
                       class="form-control"
@@ -49,24 +49,15 @@ import { IQuote } from '../../models/quote.model';
                 
                 <div class="col-md-6">
                   <div class="mb-3">
-                    <label class="form-label">Source *</label>
+                    <label class="form-label">Source</label>
                     <input 
                       type="text" 
                       class="form-control"
                       formControlName="source"
                       >
-                      <!-- [class.is-invalid]="quoteForm.get('author')?.invalid && quoteForm.get('author')?.touched" -->
-                    <!-- <div class="invalid-feedback" *ngIf="quoteForm.get('author')?.invalid && quoteForm.get('author')?.touched">
-                      Author is required
-                    </div> -->
                   </div>
                 </div>
               </div>
-              
-              <div class="row">
-              <!-- source here -->
-              </div>
-              
               
               <div class="alert alert-danger" *ngIf="errorMessage">
                 {{ errorMessage }}
@@ -153,9 +144,7 @@ export class QuoteFormComponent implements OnInit {
       this.loading = true;
       this.errorMessage = '';
       
-      console.log("quote form value", this.quoteForm.value);
       const quoteData: IQuote = {...this.quoteForm.value };
-      console.log("quote data", quoteData);
 
       const request = this.isEditing 
         ? this.quoteService.updateQuote(this.quoteId!, quoteData)
